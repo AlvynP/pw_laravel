@@ -6,13 +6,17 @@
 {{--  --}}
 {{--  --}}
 {{-- <div class="container"> --}}
-  <h1>Blog</h1>
+  <h1>Blog | <a href="/categories">Category</a></h1>
 
   @foreach ($blog as $b)
-    <article class="mb-5">
-      <a href="/blog/{{ $b->slug }}"><h2>{{ $b->title }}</h2></a>
+    <article class="mb-3 border-bottom">
+      <a class="text-decoration-none" href="/blog/{{ $b->slug }}"><h2>{{ $b->title }}</h2></a>
+
+      <p>By. <a href="/authors/{{ $b->author->username }}">{{ $b->author->name }}</a> in <a class="text-decoration-none" href="/categories/{{ $b->category->slug }}">{{ $b->category->name }}</a></p>
       {{-- <h5>by : {{ $b["author"] }}</h5> --}}
       <p>{{ $b->excerpt }}</p>
+
+      <a class="text-decoration-none" href="/blog/{{ $b->slug }}">Read More..</a>
     </article>
 
   @endforeach
