@@ -30,7 +30,7 @@ Route::get('/', function () {
 Route::get('/blog', [BlogController::class, 'index']);
 
 // 
-Route::get('blog/{slug}', [BlogController::class, 'show']);
+Route::get('/blog/{blog:slug}', [BlogController::class, 'show']);
 
 
 // 

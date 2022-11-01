@@ -10,9 +10,9 @@
 
   @foreach ($blog as $b)
     <article class="mb-5">
-      <a href="/blog/{{ $b["slug"] }}"><h2>{{ $b["title"] }}</h2></a>
-      <h5>by : {{ $b["author"] }}</h5>
-      <p>{{ $b["body"] }}</p>
+      <a href="/blog/{{ $b->slug }}"><h2>{{ $b->title }}</h2></a>
+      {{-- <h5>by : {{ $b["author"] }}</h5> --}}
+      <p>{{ $b->excerpt }}</p>
     </article>
 
   @endforeach
