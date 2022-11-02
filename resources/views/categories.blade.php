@@ -14,7 +14,7 @@
       @foreach ($categories as $c)
       <div class="col-md-4">
         <div class="card text-bg-dark">
-          <a href="/categories/{{ $c->slug }}">
+          <a href="/blog?category={{ $c->slug }}">
           <img src="https://source.unsplash.com/500x500/?{{ $c->name }}" class="card-img" alt="{{ $c->name }}">
           <div class="card-img-overlay d-flex align-items-center p-0" >
             <h5 class="card-title text-center flex-fill p-4" style="background-color: rgba(0, 0, 0, 0.4)">{{ $c->name }}</h5>
