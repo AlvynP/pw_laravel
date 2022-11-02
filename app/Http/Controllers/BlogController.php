@@ -11,9 +11,11 @@ class BlogController extends Controller
     public function index()
     {
         return view('blog', [
-            "title" => "Blog",
+            "title" => "All Blog",
+            "active" => "blog",
             // "blog" => Blog::all()
             "blog" => Blog::latest()->get()
+            // "blog" => Blog::with(['author', 'category'])->latest()->get()
         ]);
     }
 
@@ -21,6 +23,7 @@ class BlogController extends Controller
     {
         return view('post', [
             "title" => "Single Post",
+            "active" => "blog",
             // "post" => Blog::find($slug)
             "post" => $blog
         ]);

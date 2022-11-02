@@ -20,8 +20,9 @@ class BlogFactory extends Factory
             //
             'title' => $this->faker->sentence(mt_rand(2, 5)),
             'slug' => $this->faker->slug(),
-            'excerpt' => $this->faker->sentence(mt_rand(80, 100)),
-            'body' => $this->faker->paragraph(mt_rand(50, 100)),
+            'excerpt' => $this->faker->sentence(mt_rand(70, 90)),
+            // 'body' => '<p>' . implode('</p><p>', $this->faker->paragraphs(mt_rand(50, 100))) . '</p>',
+            'body' => collect($this->faker->paragraphs(mt_rand(50, 100)))->map(fn ($p) => "<p>$p</p>")->implode(''),
             'user_id' => mt_rand(1, 5),
             'category_id' => mt_rand(1, 3)
         ];
