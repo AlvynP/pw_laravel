@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class DashboadPostController extends Controller
 {
@@ -32,6 +34,9 @@ class DashboadPostController extends Controller
     public function create()
     {
         //
+        return view('dashboard.blog.create', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -43,6 +48,7 @@ class DashboadPostController extends Controller
     public function store(Request $request)
     {
         //
+        return $request;
     }
 
     /**
@@ -92,5 +98,11 @@ class DashboadPostController extends Controller
     public function destroy(Blog $blog)
     {
         //
+    }
+
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Blog::class, 'slug', $request->title);
+        return response()->json(['slug' => $slug]);
     }
 }
