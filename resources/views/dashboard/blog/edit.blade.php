@@ -3,15 +3,16 @@
 @section('container')
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Create new Blog</h1>
+  <h1 class="h2">Edit Blog</h1>
 </div>
 
 <div class="col-lg-10">
-  <form method="post" action="/dashboard/blog" class="mb-5">
+  <form method="post" action="/dashboard/blog/{{ $blog->slug }}" class="mb-5">
+    @method('put')
     @csrf
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" autofocus value="{{ old('title') }}">
+      <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" autofocus value="{{ old('title', $blog->title) }}">
       @error('title')
           <div class="invalid-feedback">{{ $message }}</div>
               
@@ -19,7 +20,7 @@
     </div>
     <div class="mb-3">
       <label for="slug" class="form-label">Slug</label>
-      <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" readonly value="{{ old('slug') }}">
+      <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" readonly value="{{ old('slug', $blog->slug) }}">
       @error('slug')
           <div class="invalid-feedback">{{ $message }}</div>
               
@@ -30,7 +31,7 @@
       <select class="form-select @error('category_id') is-invalid @enderror" name="category_id">
         <option class="text-muted" selected disabled required="required">Select Category</option>
         @foreach ($categories as $c)
-        @if(old('category_id') == $c->id)
+        @if(old('category_id', $blog->category_id) == $c->id)
         <option value="{{ $c->id }}" selected>{{ $c->name }}</option>
         @else
         <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -47,7 +48,7 @@
       @error('body')
           <p class="text-danger">{{ $message }}</p>
       @enderror
-      <input id="body" type="hidden" name="body" value="{{ old('body') }}">
+      <input id="body" type="hidden" name="body" value="{{ old('body', $blog->body) }}">
   <trix-editor input="body"></trix-editor>
     </div>
     

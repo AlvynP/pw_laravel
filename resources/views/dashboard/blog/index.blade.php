@@ -7,6 +7,13 @@
   <h1 class="h2">My Blog</h1>
 </div>
     
+
+@if (session()->has('success'))
+<div class="alert alert-success" role="alert">
+{{ session('success') }}
+</div>
+@endif
+
 <div class="table-responsive">
   <a href="/dashboard/blog/create" class="btn btn-primary">Create New Blog</a>
   <table class="table table-striped table-sm">
@@ -26,8 +33,13 @@
         <td>{{ $b->category->name }}</td>
         <td>
           <a href="/dashboard/blog/{{ $b->slug }}" class="badge bg-info"><span data-feather="eye"></span></a>
-          <a href="" class="badge bg-warning"><span data-feather="edit"></span></a>
-          <a href="" class="badge bg-danger"><span data-feather="x-circle"></span></a>
+          <a href="/dashboard/blog/{{ $b->slug }}/edit" class="badge bg-warning"><span data-feather="edit"></span></a>
+          <form action="/dashboard/blog/{{ $b->slug }}" method="post" class="d-inline">
+            @method('delete')
+            @csrf
+            <button class="badge bg-danger border-0"><span data-feather="x-circle" onclick="return confirm('Are you sure?')"></button>
+          </form>
+          {{-- <a href="" class="badge bg-danger"><span data-feather="x-circle"></span></a> --}}
         </td>
       </tr>
           

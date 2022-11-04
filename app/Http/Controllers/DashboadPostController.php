@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Str;
 
 class DashboadPostController extends Controller
 {
@@ -48,7 +49,21 @@ class DashboadPostController extends Controller
     public function store(Request $request)
     {
         //
-        return $request;
+        // return $request;
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'slug' => 'required|unique:blogs',
+            'category_id' => 'required',
+            'body' => 'required'
+        ]);
+
+        $validatedData['user_id'] = auth()->user()->id;
+        // $validatedData['excerpt'] = Str::limit($request->body, 150);
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 150);
+
+        Blog::create($validatedData);
+
+        return redirect('/dashboard/blog')->with('success', 'New blog has been added!');
     }
 
     /**
@@ -75,6 +90,10 @@ class DashboadPostController extends Controller
     public function edit(Blog $blog)
     {
         //
+        return view('dashboard.blog.edit', [
+            'blog' => $blog,
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -87,6 +106,25 @@ class DashboadPostController extends Controller
     public function update(Request $request, Blog $blog)
     {
         //
+        $rules = [
+            'title' => 'required|max:255',
+            'category_id' => 'required',
+            'body' => 'required'
+        ];
+
+        if ($request->slug != $blog->slug) {
+            $rules['slug'] = 'required|unique:blogs';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        $validatedData['user_id'] = auth()->user()->id;
+        // $validatedData['excerpt'] = Str::limit($request->body, 150);
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 150);
+
+        Blog::where('id', $blog->id)->update($validatedData);
+
+        return redirect('/dashboard/blog')->with('success', 'Blog has been updated!');
     }
 
     /**
@@ -98,6 +136,9 @@ class DashboadPostController extends Controller
     public function destroy(Blog $blog)
     {
         //
+        Blog::destroy($blog->id);
+
+        return redirect('/dashboard/blog')->with('success', 'Blog has been deleted!');
     }
 
     public function checkSlug(Request $request)
